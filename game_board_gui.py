@@ -1,7 +1,6 @@
 import tkinter
 import start_up_menu_gui
 import game_logic as gamelogic
-
 FONT = ('Times New Roman', 20)
 
 class GameBoard:
@@ -16,7 +15,7 @@ class GameBoard:
         self._game_window = tkinter.Tk()
         self._game_window.title('Othello')
         #Starting dimension and position of the window
-        self._game_window.geometry("435x350+500+200")
+        self._game_window.geometry("340x340+500+200")
         
         #Black Score Label
         self._black_score_label = tkinter.Label(master = self._game_window, text = 'Black: ' + str(self.score['Black']), font = FONT, background = 'black', foreground = 'white')
@@ -27,7 +26,7 @@ class GameBoard:
         self._white_score_label.grid(row = 0, column = 1, sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W )
 
         #Game Canvas -- where all the pieces will be placed
-        self._game_canvas = tkinter.Canvas(master = self._game_window, background = 'green')
+        self._game_canvas = tkinter.Canvas(master = self._game_window, background = '#2C9342')
         self._game_canvas.grid(row = 1, column = 0, columnspan = 2, padx = 0, pady = 0,sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
 
         #Turn Label
@@ -63,7 +62,7 @@ class GameBoard:
                 y1 = row * cell_height
                 x2 = x1 + cell_width 
                 y2 = y1 + cell_height
-                cell = self._game_canvas.create_rectangle(x1,y1,x2,y2,fill = 'green', outline = 'black', tag = (row,col))
+                cell = self._game_canvas.create_rectangle(x1,y1,x2,y2,fill = '#2C9342', outline = 'black', tag = (row,col))
                 #If the cell is pressed than it will make the command move_made
                 self._game_canvas.tag_bind(cell,'<ButtonPress-1>',self.move_made)
                 #As it goes creating each square it checks to see if the the cell has a piece in the game_board
@@ -123,16 +122,6 @@ class GameBoard:
                 else:
                     winner = 'Its A Tie!'
                     GameOver(winner,self._game_window)
-                # if self.othello_game.return_score()['Black'] < self.othello_game.return_score()['White']:
-                #     winner = '  White Player Wins!! '
-                #     #Displays the Game Over Window and the winner
-                #     GameOver(winner,self._game_window)
-                # elif self.othello_game.return_score()['Black'] > self.othello_game.return_score()['White']:
-                #     winner = '  Black Player Wins!! '
-                #     GameOver(winner,self._game_window)
-                # else:
-                #     winner = 'Its A Tie!'
-                #     GameOver(winner,self._game_window)
         except:
             print("InvalidMoveError: Try a different cell")
 
@@ -143,24 +132,26 @@ class GameOver:
         This is a small pop up window that shows up after the game is over. It gives the option to play again or stop playing
     '''
     def __init__(self,results,window):
-        #Previous window passed on to still display it in the bacl
+        #Previous window passed on to still display it in the back
         self._game_window = window
         #New current window with the result
         self._results_window = tkinter.Tk()
-        self._results_window.geometry("+630+350")
+        self._results_window.resizable(False,False)
+        self._results_window.config(background = "#2C9342")
+        self._results_window.geometry("280x90+630+350")
         self._results_window.title("Game Over")
 
         #Winner Score Label
-        self._winner_score = tkinter.Label(master = self._results_window, text = results, font = ('Times New Roman', 30),background = 'white', foreground = 'black')
+        self._winner_score = tkinter.Label(master = self._results_window, text = results, font = ('Times New Roman', 30),background = '#2C9342', foreground = 'black')
         self._winner_score.grid(row = 0, column = 0, columnspan = 2, sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W )
         
         #Play Again Label
-        self._play_again_button = tkinter.Button(master = self._results_window, text = 'Play Again', foreground = 'black')
+        self._play_again_button = tkinter.Button(master = self._results_window, text = 'Play Again', foreground = 'black', highlightbackground = 'blue')
         self._play_again_button.grid(row = 1, column = 0,padx = 10, pady = 10,sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W )
         self._play_again_button.bind('<ButtonPress-1>', self.play_again)
 
         #End Game Label
-        self._end_game_button = tkinter.Button(master = self._results_window, text = 'End Game', foreground = 'black')
+        self._end_game_button = tkinter.Button(master = self._results_window, text = 'End Game', foreground = 'black', highlightbackground = 'red')
         self._end_game_button.grid(row = 1, column = 1, padx = 10, pady = 10, sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W )
         self._end_game_button.bind('<ButtonPress-1>', self.end_game)
 
@@ -181,8 +172,6 @@ class GameOver:
         self._results_window.destroy()
         self._game_window.destroy()
         
-
-
 
 
 
